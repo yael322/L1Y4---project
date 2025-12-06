@@ -4,16 +4,16 @@ import requests
 class Pokemon:
     pokemons = {}
     # Инициализация объекта (конструктор)
-    def __init__(self, pokemon_trainer,abilities,height,weight):
+    def __init__(self, pokemon_trainer):
 
         self.pokemon_trainer = pokemon_trainer   
 
         self.pokemon_number = randint(1,1000)
         self.img = self.get_img()
         self.name = self.get_name()
-        self.abilities = abilities()
-        self.height = height()
-        self.weight = weight
+
+        self.power = randint(30, 60)
+        self.hp = randint(200, 400)
 
         Pokemon.pokemons[pokemon_trainer] = self
 
@@ -39,15 +39,59 @@ class Pokemon:
 
 
     # Метод класса для получения информации
-    def info(self,abilities):
-        return f"Имя твоего покеомона: {self.name}"
-        return f"Способности твоего покеомона: {self.abilities}"
-        return f"Рост твоего покеомона: {self.height}"
-        return f"Вес твоего покеомона: {self.weight}"
+    def info(self):
+        return (f"Имя твоего покеомона: {self.name}\n"
+                f"Сила покеомона: {self.power}\n"
+                f"Здоровье покеомона: {self.hp}\n")
 
     # Метод класса для получения картинки покемона
     def show_img(self):
         return self.img
+    
+    
+    # Метод класса для атаки
+    def attack(self, enemy):
+        if isinstance(enemy, Wizard):
+            chance = randint(1, 5)
+            if chance == 2:
+                return 'Покеомон-волшебник применил щит в сражении'
+        if enemy.hp > self.power:
+            enemy.hp -= self.power
+            return f"Сражение @{self.pokemon_trainer} с @{enemy.pokemon_trainer}"
+        else:
+            enemy.hp = 0
+            return f"Победа @{self.pokemon_trainer} над @{enemy.pokemon_trainer}! "
+        
+class Wizard(Pokemon):
+    def info(self):
+        return 'У тебя покеомон-волшебник\n\n' + super().info()
+    
+class Fighter(Pokemon):
+    def attack(self, enemy):
+        super_power = randint(5, 15)
+        self.power += super_power
+        result = super().attack(enemy)
+        self.power -= super_power
+        return result + f'\nБоец применил супер атаку силой {super_power}'
+    
+    def info(self):
+        return 'У тебя покеомон-боец\n\n' + super().info()
+    
+if __name__ == '__main__':
+    wizard = Wizard("username1")
+    fighter = Fighter("username2")
+
+    print(wizard.info())
+    print()
+    print(fighter.info())
+    print()
+    print(fighter.attack(wizard))
+            
+
+
+
+
+
 
 
 
