@@ -30,6 +30,17 @@ def attack(message):
 
 bot.infinity_polling(none_stop=True)
 
+@bot.message_handler(commands=['info'])
+def info(message):
+     if message.from_user.username in Pokemon.pokemons.keys():
+          pok = Pokemon.pokemons[message.from_user.username]
+          bot.send_message(message.chat.id, info())
+
+@bot.message_handler(commands=['feed'])
+def feed(message):
+          bot.send_message(message.chat.id, feed())
+
+
 
 
 
