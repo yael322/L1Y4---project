@@ -27,9 +27,6 @@ def attack(message):
     else:
             bot.send_message(message.chat.id, "Чтобы атаковать, нужно ответить на сообщения того, кого хочешь атаковать")
 
-
-bot.infinity_polling(none_stop=True)
-
 @bot.message_handler(commands=['info'])
 def info(message):
      if message.from_user.username in Pokemon.pokemons.keys():
@@ -38,7 +35,23 @@ def info(message):
 
 @bot.message_handler(commands=['feed'])
 def feed(message):
-          bot.send_message(message.chat.id, feed())
+    username = message.from_user.username
+
+    if username in Pokemon.pokemons:
+        pok = Pokemon.pokemons[username]
+        result = feed()   # метод кормления
+        bot.send_message(message.chat.id, result)
+    else:
+        bot.send_message(message.chat.id, "У тебя ещё нет покемона. Напиши /go"
+
+
+bot.infinity_polling(none_stop=True)
+
+)
+
+
+
+
 
 
 
